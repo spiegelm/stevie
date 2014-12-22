@@ -99,7 +99,7 @@ def download_landscape(prefix, id):
     y0_max = 306 + 10
 
     crop_x = 45
-    crop_x_last = 141
+    crop_x_last = 211
 
     crop_y = 239
     crop_y_last = 253
@@ -110,9 +110,14 @@ def download_landscape(prefix, id):
 
 def download_id(prefix, id):
     if id < 0:
-        return download_landscape(prefix, -id)
+        id = -id
+        img = download_landscape(prefix, id)
     else:
-        return download_portrait(prefix, id)
+        img = download_portrait(prefix, id)
+
+    print("=== SAVING {} ===".format(id))
+    img.save("{}.jpg".format(id))
+    img.close()
 
 
 def main():
@@ -125,11 +130,7 @@ def main():
     args = parser.parse_args()
 
     for id in args.ids:
-        print("=== DOWNLOADING {} ===".format(id))
-        img = download_id(args.url_base, id)
-
-        img.save("{}.jpg".format(id))
-        img.close()
+        download_id(args.url_base, id)
 
 
 if __name__ == '__main__':
